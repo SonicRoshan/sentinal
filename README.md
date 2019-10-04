@@ -23,9 +23,9 @@ func main() {
 }
 ```
 
-## Function List
+## Functions List
 
-### max
+### Max
 #### Use case
 ```go
 type user struct {
@@ -34,7 +34,7 @@ type user struct {
 ```
 This will check if value in struct is ```<=``` than value provided in struct tag, which in this case is 100
 
-### maxExclusive
+### Max Exclusive
 #### Use case
 ```go
 type user struct {
@@ -43,7 +43,7 @@ type user struct {
 ```
 This will check if value in struct is ```<``` than value provided in struct tag, which in this case is 50.5. This would also work with floats.
 
-### min
+### Min
 #### Use case
 ```go
 type user struct {
@@ -52,7 +52,7 @@ type user struct {
 ```
 This will check if value in struct is ```>=``` than value provided in struct tag, which in this case is 14. This would also work with floats.
 
-### minExclusive
+### Min Exclusive
 #### Use case
 ```go
 type user struct {
