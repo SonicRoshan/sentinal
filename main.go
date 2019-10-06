@@ -2,37 +2,54 @@ package sentinal
 
 import (
 	"reflect"
+
+	"github.com/pkg/errors"
 )
 
-//Validate is used to validate an object
-func Validate(object interface{}) (valid bool, output map[string]string, err error) {
-	valueOf := reflect.ValueOf(object)
-	typeOf := reflect.TypeOf(object)
-	output = map[string]string{}
-	var msg string
+//validateField is used to validate a single field against all tags
+func validateField(tags reflect.StructTag, value reflect.Value) (bool, []string, error) {
+	msgs := []string{}
 
-	for i := 0; i < typeOf.NumField(); i++ {
-		curField := typeOf.Field(i)
+	for functionName, function := range functions {
 
-		for functionName, function := range functions {
+		tagValue, ok := tags.Lookup(functionName)
 
-			value, ok := curField.Tag.Lookup(functionName)
+		if ok {
+			_, msg, err := function(
+				value,
+				tagValue,
+			)
 
-			if ok {
-				valid, msg, err = function(
-					valueOf.Field(i),
-					value,
-				)
-
-				if msg != "" {
-					output[curField.Name] = msg
-					return
-				} else if err != nil || !valid {
-					return
-				}
+			if msg != "" {
+				msgs = append(msgs, msg)
+			} else if err != nil {
+				return false, []string{}, err
 			}
 		}
 	}
 
-	return
+	return len(msgs) <= 0, msgs, nil
+}
+
+//Validate is used to validate an object
+func Validate(object interface{}) (bool, map[string][]string, error) {
+	valueOf := reflect.ValueOf(object)
+	typeOf := reflect.TypeOf(object)
+	output := map[string][]string{}
+
+	for i := 0; i < typeOf.NumField(); i++ {
+		curField := typeOf.Field(i)
+		curValue := valueOf.Field(i)
+		valid, msgs, err := validateField(curField.Tag, curValue)
+
+		if err != nil {
+			err = errors.Wrap(err, "Error while validating field")
+			return false, map[string][]string{}, err
+		} else if !valid {
+			output[curField.Name] = msgs
+		}
+
+	}
+
+	return len(output) <= 0, output, nil
 }

@@ -21,7 +21,7 @@ func getNumber(number reflect.Value) (float64, error) {
 		return number.Float(), nil
 	}
 
-	return 0.0, errors.Wrap(ErrInvalidType, "getNumber got not number type data")
+	return 0.0, errors.Wrap(ErrInvalidType, "getNumber got non number type data")
 }
 
 func getNumberFromString(numberStr string) (float64, error) {
