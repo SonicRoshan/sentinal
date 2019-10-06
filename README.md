@@ -10,16 +10,18 @@ type user struct {
 func main() {
 
     data := user{15}
-    valid, err := sentinal.Validate(user)
+    valid, data, err := sentinal.Validate(user)
     //valid will be true
 
     data := user{10}
-    valid, err = sentinal.Validate(user)
+    valid, data, err = sentinal.Validate(user)
     //valid will be false
+    //data = {"age" : ["min is 14"]}
 
     data := user{101}
-    valid, err = sentinal.Validate(user)
+    valid, data, err = sentinal.Validate(user)
     //valid will be false
+    //data = {"age" : ["max is 100"]}
 }
 ```
 
