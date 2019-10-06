@@ -5,9 +5,11 @@ import (
 )
 
 //Validate is used to validate an object
-func Validate(object interface{}) (bool, error) {
+func Validate(object interface{}) (valid bool, output map[string]string, err error) {
 	valueOf := reflect.ValueOf(object)
 	typeOf := reflect.TypeOf(object)
+	output = map[string]string{}
+	var msg string
 
 	for i := 0; i < typeOf.NumField(); i++ {
 		curField := typeOf.Field(i)
@@ -17,17 +19,20 @@ func Validate(object interface{}) (bool, error) {
 			value, ok := curField.Tag.Lookup(functionName)
 
 			if ok {
-				valid, err := function(
+				valid, msg, err = function(
 					valueOf.Field(i),
 					value,
 				)
 
-				if !valid || err != nil {
-					return valid, err
+				if msg != "" {
+					output[curField.Name] = msg
+					return
+				} else if err != nil || !valid {
+					return
 				}
 			}
 		}
 	}
 
-	return true, nil
+	return
 }

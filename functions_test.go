@@ -13,27 +13,31 @@ type test struct {
 
 func testFunction(
 	assert *assert.Assertions,
-	function func(reflect.Value, string) (bool, error),
+	function func(reflect.Value, string) (bool, string, error),
 	value interface{},
 	invalidValue interface{},
 	validationData string,
 	invalidValidation string) {
 
-	valid, err := function(reflect.ValueOf(value), validationData)
+	valid, msg, err := function(reflect.ValueOf(value), validationData)
 	assert.True(valid)
 	assert.NoError(err)
+	assert.Zero(msg)
 
-	valid, err = function(reflect.ValueOf(invalidValue), validationData)
+	valid, msg, err = function(reflect.ValueOf(invalidValue), validationData)
 	assert.False(valid)
 	assert.NoError(err)
+	assert.NotZero(msg)
 
-	valid, err = function(reflect.ValueOf(test{1}), validationData)
+	valid, msg, err = function(reflect.ValueOf(test{1}), validationData)
 	assert.False(valid)
 	assert.Error(err)
+	assert.Zero(msg)
 
-	valid, err = function(reflect.ValueOf(value), invalidValidation)
+	valid, msg, err = function(reflect.ValueOf(value), invalidValidation)
 	assert.False(valid)
 	assert.Error(err)
+	assert.Zero(msg)
 }
 
 func Test(t *testing.T) {

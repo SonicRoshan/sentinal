@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-var functions = map[string]func(reflect.Value, string) (bool, error){
+var functions = map[string]func(reflect.Value, string) (bool, string, error){
 	"max":          maxInclusive,
 	"min":          minInclusive,
 	"maxExclusive": maxExclusive,
