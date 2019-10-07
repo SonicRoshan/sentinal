@@ -62,3 +62,21 @@ type user struct {
 }
 ```
 This will check if value in struct is ```>``` than value provided in struct tag, which in this case is 15.5. This would also work with floats.
+
+### From
+Checks if a value is in a list.
+Note - there should not be a space between commas.
+```go
+type address struct {
+    country string `from:"england,france,spain"`
+}
+```
+
+### Not From
+Checks if a value is not in a list.
+Note - there should not be a space between commas.
+```go
+type user struct {
+    favColor string `notFrom:"black,white,blue"`
+}
+```
