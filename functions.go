@@ -104,3 +104,11 @@ func notFrom(value reflect.Value, validationData string) (bool, string, error) {
 	}
 	return true, "", nil
 }
+
+func notEmpty(value reflect.Value, validationData string) (bool, string, error) {
+	if reflect.DeepEqual(value.Interface(), reflect.Zero(value.Type()).Interface()) &&
+		validationData == "true" {
+		return false, "value is nil", nil
+	}
+	return true, "", nil
+}

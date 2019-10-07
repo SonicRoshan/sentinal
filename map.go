@@ -9,4 +9,7 @@ var functions = map[string]func(reflect.Value, string) (bool, string, error){
 	"min":          minInclusive,
 	"maxExclusive": maxExclusive,
 	"minExclusive": minExclusive,
+	"from":         from,
+	"notFrom":      notFrom,
+	"notEmpty":     notEmpty,
 }

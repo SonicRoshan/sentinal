@@ -53,4 +53,5 @@ func Test(t *testing.T) {
 	testFunction(assert, minExclusive, 5.11119, 5.1, "5.1", "abc")
 	testFunction(assert, from, "a", "e", "a,b,c,d")
 	testFunction(assert, notFrom, "e", "a", "a,b,c,d")
+	testFunction(assert, notEmpty, "a", "", "true")
 }

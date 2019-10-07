@@ -80,3 +80,12 @@ type user struct {
     favColor string `notFrom:"black,white,blue"`
 }
 ```
+
+### Not Empty
+Checks if a field is not empty. Works with any data type
+```go
+type user struct {
+    username string `notEmpty:"true"`
+    age int `notEmpty:"true"`
+}
+```
