@@ -119,10 +119,26 @@ type user struct {
 ```
 
 ### Not Empty
-Checks if a field is not empty. Works with any data type
+Checks if a field is not empty. Works with any data type.
 ```go
 type user struct {
     username string `notEmpty:"true"`
     age int `notEmpty:"true"`
+}
+```
+
+### Max Length
+Checks if length of data is less than max. Works with any data type.
+```go
+type user struct {
+    name string `maxLen:"8"`
+}
+```
+
+### Min Length
+Checks if length of data is greater than min. Works with any data type.
+```go
+type user struct {
+    name string `minLen:"8"`
 }
 ```

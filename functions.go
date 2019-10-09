@@ -112,3 +112,35 @@ func notEmpty(value reflect.Value, validationData string) (bool, string, error) 
 	}
 	return true, "", nil
 }
+
+func maxLength(value reflect.Value, validationData string) (valid bool, msg string, err error) {
+	defer handlePanic(&err, "Invalid Data")
+
+	max, err := getNumberFromString(validationData)
+	if err != nil {
+		return
+	}
+
+	valid = value.Len() <= int(max)
+	if !valid {
+		msg = "Length is greater than max"
+	}
+
+	return
+}
+
+func minLength(value reflect.Value, validationData string) (valid bool, msg string, err error) {
+	defer handlePanic(&err, "Invalid Data")
+
+	min, err := getNumberFromString(validationData)
+	if err != nil {
+		return
+	}
+
+	valid = value.Len() >= int(min)
+	if !valid {
+		msg = "Length is smaller than min"
+	}
+
+	return
+}

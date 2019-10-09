@@ -15,12 +15,12 @@ func validateField(tags reflect.StructTag, value reflect.Value) (bool, []string,
 		tagValue, ok := tags.Lookup(functionName)
 
 		if ok {
-			_, msg, err := function(
+			valid, msg, err := function(
 				value,
 				tagValue,
 			)
 
-			if msg != "" {
+			if !valid && err == nil {
 				msgs = append(msgs, msg)
 			} else if err != nil {
 				return false, []string{}, err

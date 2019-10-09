@@ -8,4 +8,6 @@ var functions = map[string]functionType{
 	"from":         from,
 	"notFrom":      notFrom,
 	"notEmpty":     notEmpty,
+	"maxLen":       maxLength,
+	"minLen":       minLength,
 }
