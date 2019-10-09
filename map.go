@@ -1,10 +1,6 @@
 package sentinal
 
-import (
-	"reflect"
-)
-
-var functions = map[string]func(reflect.Value, string) (bool, string, error){
+var functions = map[string]functionType{
 	"max":          maxInclusive,
 	"min":          minInclusive,
 	"maxExclusive": maxExclusive,

@@ -32,10 +32,19 @@ func validateField(tags reflect.StructTag, value reflect.Value) (bool, []string,
 }
 
 //Validate is used to validate an object
-func Validate(object interface{}) (bool, map[string][]string, error) {
+func Validate(
+	object interface{},
+	customFunctionsArg ...map[string]functionType) (bool, map[string][]string, error) {
+
 	valueOf := reflect.ValueOf(object)
 	typeOf := reflect.TypeOf(object)
 	output := map[string][]string{}
+
+	if customFunctionsArg != nil {
+		for name, function := range customFunctionsArg[0] {
+			functions[name] = function
+		}
+	}
 
 	for i := 0; i < typeOf.NumField(); i++ {
 		curField := typeOf.Field(i)

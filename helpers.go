@@ -8,6 +8,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+type functionType func(reflect.Value, string) (bool, string, error)
+
 // ErrInvalidType occurs when data is of invalid type
 var ErrInvalidType = errors.New("Invalid Data Type")
 

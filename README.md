@@ -27,6 +27,32 @@ func main() {
 }
 ```
 
+
+## Custom Validation Functions
+```go
+type user struct {
+    name string `isName:"true"` // isName is a custom functions
+}
+
+func isName(value reflect.Value, validationData string) (bool, string, error) {
+    // value is the reflect.Value of the field.
+    // validationData is the data provided in struct tag, which in this case is true.
+    
+    //SOME LOGIC HERE
+
+    /*
+    first thing to return is if the data is valid.
+    second thing to return is a string message when data is invalid.
+    This helps you to see what was invalid.
+    third thing to return is an error if any.
+    */
+    
+    return true, "", nil
+}
+
+
+```
+
 ## Functions List
 
 ### Max

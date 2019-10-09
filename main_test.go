@@ -1,10 +1,13 @@
 package sentinal
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+var dataCame bool
 
 type user struct {
 	username string
@@ -13,6 +16,15 @@ type user struct {
 
 type test2 struct {
 	name string `max:"32"`
+}
+
+type test3 struct {
+	custom string `custom:"data"`
+}
+
+func customFunc(value reflect.Value, data string) (bool, string, error) {
+	dataCame = true
+	return true, "", nil
 }
 
 func TestValidation(t *testing.T) {
@@ -35,6 +47,15 @@ func TestValidation(t *testing.T) {
 	assert.False(valid)
 	assert.Error(err)
 	assert.Empty(validationData)
+
+	data3 := test3{"tt"}
+	valid, validationData, err = Validate(data3, map[string]functionType{
+		"custom": customFunc,
+	})
+	assert.True(valid)
+	assert.Empty(validationData)
+	assert.NoError(err)
+	assert.True(dataCame)
 
 }
 
