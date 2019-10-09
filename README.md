@@ -46,8 +46,17 @@ func isName(value reflect.Value, validationData string) (bool, string, error) {
     This helps you to see what was invalid.
     third thing to return is an error if any.
     */
-    
+
     return true, "", nil
+}
+
+
+func main() {
+    data := user{"Name"}
+
+    sentinal.Validate(data, map[string]func(reflect.Value, string) (bool, string, error){
+        "isName" : isName,
+    })
 }
 
 
