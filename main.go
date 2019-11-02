@@ -6,40 +6,37 @@ import (
 	"github.com/pkg/errors"
 )
 
-//validateField is used to validate a single field against all tags
-func validateField(tags reflect.StructTag, value reflect.Value) (bool, []string, error) {
+func validateField(
+	value reflect.Value,
+	args map[string]string) (bool, []string, error) {
+
 	msgs := []string{}
-
-	for functionName, function := range functions {
-
-		tagValue, ok := tags.Lookup(functionName)
-
-		if ok {
-			valid, msg, err := function(
-				value,
-				tagValue,
-			)
-
-			if !valid && err == nil {
-				msgs = append(msgs, msg)
-			} else if err != nil {
-				return false, []string{}, err
-			}
+	for name, arg := range args {
+		valid, msg, err := functions[name](value, arg)
+		if !valid && err == nil {
+			msgs = append(msgs, msg)
+		} else if err != nil {
+			return false, []string{}, err
 		}
 	}
 
 	return len(msgs) <= 0, msgs, nil
 }
 
-//Validate is used to validate an object
+// Validate is used to validate an object
 func Validate(
 	object interface{},
-	customFunctionsArg ...map[string]functionType) (bool, map[string][]string, error) {
+	schema map[string]map[string]string,
+	customFunctionsArg ...map[string]functionType) (
+	bool,
+	map[string][]string,
+	error) {
 
 	valueOf := reflect.ValueOf(object)
 	typeOf := reflect.TypeOf(object)
 	output := map[string][]string{}
 
+	// If custom functions are given, add it to functions map
 	if customFunctionsArg != nil {
 		for name, function := range customFunctionsArg[0] {
 			functions[name] = function
@@ -48,14 +45,15 @@ func Validate(
 
 	for i := 0; i < typeOf.NumField(); i++ {
 		curField := typeOf.Field(i)
-		curValue := valueOf.Field(i)
-		valid, msgs, err := validateField(curField.Tag, curValue)
 
-		if err != nil {
-			err = errors.Wrap(err, "Error while validating field")
-			return false, map[string][]string{}, err
-		} else if !valid {
-			output[curField.Name] = msgs
+		if args, ok := schema[curField.Name]; ok {
+			valid, msgs, err := validateField(valueOf.Field(i), args)
+			if err != nil {
+				err = errors.Wrap(err, "Error while validating field")
+				return false, map[string][]string{}, err
+			} else if !valid {
+				output[curField.Name] = msgs
+			}
 		}
 
 	}

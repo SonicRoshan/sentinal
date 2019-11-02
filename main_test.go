@@ -30,26 +30,44 @@ func customFunc(value reflect.Value, data string) (bool, string, error) {
 func TestValidation(t *testing.T) {
 	assert := assert.New(t)
 
+	userSchema := schemaType{
+		"age": map[string]string{
+			"max": "11",
+		},
+	}
+
+	test2Schema := schemaType{
+		"name": map[string]string{
+			"max": "32",
+		},
+	}
+
+	test3Schema := schemaType{
+		"custom": map[string]string{
+			"custom": "data",
+		},
+	}
+
 	userData := user{username: "2", age: 10}
-	valid, validationData, err := Validate(userData)
+	valid, validationData, err := Validate(userData, userSchema)
 	assert.True(valid)
 	assert.Empty(validationData)
 	assert.NoError(err)
 
 	userData = user{username: "2", age: 120}
-	valid, validationData, err = Validate(userData)
+	valid, validationData, err = Validate(userData, userSchema)
 	assert.False(valid)
 	assert.NoError(err)
 	assert.NotEmpty(validationData)
 
 	data := test2{"A"}
-	valid, validationData, err = Validate(data)
+	valid, validationData, err = Validate(data, test2Schema)
 	assert.False(valid)
 	assert.Error(err)
 	assert.Empty(validationData)
 
 	data3 := test3{"tt"}
-	valid, validationData, err = Validate(data3, map[string]functionType{
+	valid, validationData, err = Validate(data3, test3Schema, map[string]functionType{
 		"custom": customFunc,
 	})
 	assert.True(valid)
