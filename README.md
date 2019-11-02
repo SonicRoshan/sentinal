@@ -62,7 +62,7 @@ func main() {
     data := user{"Name"}
 
     schema := map[string]map[string]string{
-        "fieldName" : map[string]string{
+        "name" : map[string]string{
             "isName" : "true", // isName is custom function
         },
     }
