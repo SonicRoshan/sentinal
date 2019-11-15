@@ -144,3 +144,27 @@ func minLength(value reflect.Value, validationData string) (valid bool, msg stri
 
 	return
 }
+
+func contains(value reflect.Value, validationData string) (valid bool, msg string, err error) {
+	defer handlePanic(&err, "Invalid Data")
+	items := strings.Split(validationData, ",")
+	for _, item := range items {
+		contains := strings.Contains(value.String(), item)
+		if !contains {
+			return false, "Value does not contain " + item, nil
+		}
+	}
+	return true, "", nil
+}
+
+func notContains(value reflect.Value, validationData string) (valid bool, msg string, err error) {
+	defer handlePanic(&err, "Invalid Data")
+	items := strings.Split(validationData, ",")
+	for _, item := range items {
+		contains := strings.Contains(value.String(), item)
+		if contains {
+			return false, "Value does contain " + item, nil
+		}
+	}
+	return true, "", nil
+}

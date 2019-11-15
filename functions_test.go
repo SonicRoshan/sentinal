@@ -56,4 +56,6 @@ func Test(t *testing.T) {
 	testFunction(assert, notEmpty, "a", "", "true")
 	testFunction(assert, maxLength, "abc", "abcde", "3", "abc")
 	testFunction(assert, minLength, "abcde", "abc", "5", "abc")
+	testFunction(assert, notContains, "de", "test", "est")
+	testFunction(assert, contains, "test", "de", "est")
 }

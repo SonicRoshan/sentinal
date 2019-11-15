@@ -10,4 +10,6 @@ var functions = map[string]functionType{
 	"notEmpty":     notEmpty,
 	"maxLen":       maxLength,
 	"minLen":       minLength,
+	"contains":     contains,
+	"notContains":  notContains,
 }

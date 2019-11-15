@@ -169,3 +169,23 @@ schema := map[string]map[string]string{
     },
 }
 ```
+
+### contains
+Checks if a string contains certain items. Seperated by comma
+```go
+schema := map[string]map[string]string{
+    "fieldName" : map[string]string{
+        "contains" : "test,test2",
+    },
+}
+```
+
+### notContains
+Checks if a string does not contain certain items. Seperated by comma
+```go
+schema := map[string]map[string]string{
+    "fieldName" : map[string]string{
+        "notContains" : " ,test2",
+    },
+}
+```
