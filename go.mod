@@ -1,4 +1,4 @@
-module github.com/ZeroTechh/sentinal
+module github.com/ZeroTechh/sentinal/v2
 
 go 1.13
 
