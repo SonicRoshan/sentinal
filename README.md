@@ -189,3 +189,13 @@ schema := map[string]map[string]string{
     },
 }
 ```
+
+### isEmail
+Checks if field is an email.
+```go
+schema := map[string]map[string]string{
+    "fieldName" : map[string]string{
+        "isEmail" : "true",
+    },
+}
+```

@@ -12,4 +12,5 @@ var functions = map[string]functionType{
 	"minLen":       minLength,
 	"contains":     contains,
 	"notContains":  notContains,
+	"isEmail": isEmail,
 }

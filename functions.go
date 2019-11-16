@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+
+	"github.com/asaskevich/govalidator"
 )
 
 func maxInclusive(value reflect.Value, validationData string) (valid bool, msg string, err error) {
@@ -167,4 +169,19 @@ func notContains(value reflect.Value, validationData string) (valid bool, msg st
 		}
 	}
 	return true, "", nil
+}
+
+func isEmail(value reflect.Value, validationData string) (valid bool, msg string, err error) {
+	defer handlePanic(&err, "Invalid Data")
+	if validationData != "true" {
+		valid = true
+		return
+	}
+
+	email := value.String()
+	valid = govalidator.IsEmail(email)
+	if !valid {
+		msg = "Email is invalid"
+	}
+	return
 }

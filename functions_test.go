@@ -44,6 +44,29 @@ func testFunction(
 	}
 }
 
+
+func testFunctionWithBoolInputs(
+	assert *assert.Assertions,
+	function func(reflect.Value, string) (bool, string, error),
+	value interface{},
+	invalidValue interface{}) {
+
+	valid, msg, err := function(reflect.ValueOf(value), "true")
+	assert.True(valid)
+	assert.NoError(err)
+	assert.Zero(msg)
+
+	valid, msg, err = function(reflect.ValueOf(invalidValue), "true")
+	assert.False(valid)
+	assert.NoError(err)
+	assert.NotZero(msg)
+
+	valid, msg, err = function(reflect.ValueOf("somethingElse"), "false")
+	assert.True(valid)
+	assert.NoError(err)
+	assert.Zero(msg)
+}
+
 func Test(t *testing.T) {
 	assert := assert.New(t)
 
@@ -58,4 +81,6 @@ func Test(t *testing.T) {
 	testFunction(assert, minLength, "abcde", "abc", "5", "abc")
 	testFunction(assert, notContains, "de", "test", "est")
 	testFunction(assert, contains, "test", "de", "est")
+	testFunctionWithBoolInputs(assert, isEmail, "sonicroshan122@gmail.com", "invalidEmail")
+
 }
