@@ -185,3 +185,25 @@ func isEmail(value reflect.Value, validationData string) (valid bool, msg string
 	}
 	return
 }
+
+func simpleOverlay(function func(string) bool, msgToReturn string) functionType {
+	return func(value reflect.Value, validationData string) (valid bool, msg string, err error) {
+		defer handlePanic(&err, "Invalid Data")
+		valid = function(value.String())
+		if !valid {
+			msg = msgToReturn
+		}
+		return
+	}
+}
+
+func simpleOverlayReverse(function func(string) bool, msgToReturn string) functionType {
+	return func(value reflect.Value, validationData string) (valid bool, msg string, err error) {
+		defer handlePanic(&err, "Invalid Data")
+		valid = !function(value.String())
+		if !valid {
+			msg = msgToReturn
+		}
+		return
+	}
+}

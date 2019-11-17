@@ -199,3 +199,22 @@ schema := map[string]map[string]string{
     },
 }
 ```
+
+### hasUpperCase
+Checks if field has upper case characters.
+```go
+schema := map[string]map[string]string{
+    "fieldName" : map[string]string{
+        "hasUpperCase" : "true",
+    },
+}
+```
+### notHasUpperCase
+Checks if field does not have upper case characters.
+```go
+schema := map[string]map[string]string{
+    "fieldName" : map[string]string{
+        "notHasUpperCase" : "true",
+    },
+}
+```

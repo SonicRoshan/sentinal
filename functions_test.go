@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -44,7 +45,6 @@ func testFunction(
 	}
 }
 
-
 func testFunctionWithBoolInputs(
 	assert *assert.Assertions,
 	function func(reflect.Value, string) (bool, string, error),
@@ -82,5 +82,11 @@ func Test(t *testing.T) {
 	testFunction(assert, notContains, "de", "test", "est")
 	testFunction(assert, contains, "test", "de", "est")
 	testFunctionWithBoolInputs(assert, isEmail, "sonicroshan122@gmail.com", "invalidEmail")
+
+	function := simpleOverlay(govalidator.HasUpperCase, "test")
+	testFunction(assert, function, "Valid", "invaid", "true")
+
+	function = simpleOverlayReverse(govalidator.HasUpperCase, "test")
+	testFunction(assert, function, "valid", "Invaid", "true")
 
 }
