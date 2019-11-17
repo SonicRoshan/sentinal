@@ -27,7 +27,7 @@ func validateField(
 func Validate(
 	object interface{},
 	schema map[string]map[string]string,
-	customFunctionsArg ...map[string]functionType) (
+	customFunctionsArg ...map[string]func(reflect.Value, string) (bool, string, error)) (
 	bool,
 	map[string][]string,
 	error) {

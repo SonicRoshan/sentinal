@@ -67,7 +67,7 @@ func TestValidation(t *testing.T) {
 	assert.Empty(validationData)
 
 	data3 := test3{"tt"}
-	valid, validationData, err = Validate(data3, test3Schema, map[string]functionType{
+	valid, validationData, err = Validate(data3, test3Schema, map[string]func(reflect.Value, string) (bool, string, error){
 		"custom": customFunc,
 	})
 	assert.True(valid)

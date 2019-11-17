@@ -1,8 +1,12 @@
 package sentinal
 
-import "github.com/asaskevich/govalidator"
+import (
+	"reflect"
 
-var functions = map[string]functionType{
+	"github.com/asaskevich/govalidator"
+)
+
+var functions = map[string]func(reflect.Value, string) (bool, string, error){
 	"max":             maxInclusive,
 	"min":             minInclusive,
 	"maxExclusive":    maxExclusive,
