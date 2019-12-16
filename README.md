@@ -34,6 +34,28 @@ func main() {
 }
 ```
 
+## Using YAML
+
+schema.yaml
+```yaml
+age:
+  max: "100" // make sure every value is string
+  min: "14"
+```
+
+main.go
+```go
+func main() {
+    data := user{101}
+    valid, msg, err = sentinal.ValidateWithYAML(
+        user, "schema.yaml", []string{"/"})
+    // provide file name and as many file paths where the file could be
+    // valid will be false
+    // msg = {"age" : ["max is 100"]}
+}
+```
+
+
 
 ## Custom Validation Functions
 ```go

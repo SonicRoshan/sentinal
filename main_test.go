@@ -66,6 +66,11 @@ func TestValidation(t *testing.T) {
 	assert.Error(err)
 	assert.Empty(validationData)
 
+	valid, validationData, err = ValidateWithYAML(data, "test1_schema.yaml", []string{"schema"})
+	assert.False(valid)
+	assert.Error(err)
+	assert.Empty(validationData)
+
 	data3 := test3{"tt"}
 	valid, validationData, err = Validate(data3, test3Schema, map[string]func(reflect.Value, string) (bool, string, error){
 		"custom": customFunc,
@@ -74,7 +79,6 @@ func TestValidation(t *testing.T) {
 	assert.Empty(validationData)
 	assert.NoError(err)
 	assert.True(dataCame)
-
 }
 
 func TestPanicHandler(t *testing.T) {
