@@ -1,4 +1,4 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/SonicRoshan/sentinal)](https://goreportcard.com/report/github.com/SonicRoshan/sentinal) [![GoDoc](https://godoc.org/github.com/SonicRoshan/sentinal?status.svg)](https://godoc.org/github.com/SonicRoshan/sentinal) [![GoCover](https://gocover.io/_badge/github.com/SonicRoshan/sentinal)](https://gocover.io/github.com/SonicRoshan/sentinal)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ZeroTechh/sentinal)](https://goreportcard.com/report/github.com/ZeroTechh/sentinal) [![GoDoc](https://godoc.org/github.com/ZeroTechh/sentinal?status.svg)](https://godoc.org/github.com/ZeroTechh/sentinal) [![GoCover](https://gocover.io/_badge/github.com/ZeroTechh/sentinal)](https://gocover.io/github.com/ZeroTechh/sentinal)
 
 # Sentinal
 Data Validation Library In Go
