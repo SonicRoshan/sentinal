@@ -1,0 +1,6 @@
+a:
+  maxLen: "3"
+b:
+  min: "4"
+c:
+  custom: "custom"

@@ -9,17 +9,9 @@ import (
 
 var dataCame bool
 
-type user struct {
-	username string
-	age      int `max:"32"`
-}
-
 type test2 struct {
-	name string `max:"32"`
-}
-
-type test3 struct {
-	custom string `custom:"data"`
+	a string
+	b int
 }
 
 func customFunc(value reflect.Value, data string) (bool, string, error) {
@@ -30,55 +22,56 @@ func customFunc(value reflect.Value, data string) (bool, string, error) {
 func TestValidation(t *testing.T) {
 	assert := assert.New(t)
 
-	userSchema := schemaType{
-		"age": map[string]string{
-			"max": "11",
-		},
-	}
+	schema := []string{"schema", "../schema"}
 
-	test2Schema := schemaType{
-		"name": map[string]string{
-			"max": "32",
-		},
-	}
-
-	test3Schema := schemaType{
-		"custom": map[string]string{
-			"custom": "data",
-		},
-	}
-
-	userData := user{username: "2", age: 10}
-	valid, validationData, err := Validate(userData, userSchema)
+	// Testing that sentinal outputs true for a valid struct
+	data := test2{"a", 100}
+	valid, msg, err := ValidateWithYAML(data, "schema.yaml", schema,
+		map[string]func(reflect.Value, string) (bool, string, error){
+			"custom": customFunc,
+		})
 	assert.True(valid)
-	assert.Empty(validationData)
+	assert.Empty(msg)
 	assert.NoError(err)
 
-	userData = user{username: "2", age: 120}
-	valid, validationData, err = Validate(userData, userSchema)
+	// Testing that sentinal outputs false for a invalid struct
+	data = test2{"abc", -10}
+	valid, msg, err = ValidateWithYAML(data, "schema.yaml", schema,
+		map[string]func(reflect.Value, string) (bool, string, error){
+			"custom": customFunc,
+		})
 	assert.False(valid)
+	assert.NotEmpty(msg)
 	assert.NoError(err)
-	assert.NotEmpty(validationData)
 
-	data := test2{"A"}
-	valid, validationData, err = Validate(data, test2Schema)
+	// Testing that sentinal outputs error for a invalid schema data
+	data = test2{"abc", -10}
+	valid, msg, err = ValidateWithYAML(data, "schema3.yaml", schema)
 	assert.False(valid)
+	assert.Empty(msg)
 	assert.Error(err)
-	assert.Empty(validationData)
 
-	valid, validationData, err = ValidateWithYAML(data, "test1_schema.yaml", []string{"schema"})
-	assert.False(valid)
-	assert.Error(err)
-	assert.Empty(validationData)
-
-	data3 := test3{"tt"}
-	valid, validationData, err = Validate(data3, test3Schema, map[string]func(reflect.Value, string) (bool, string, error){
-		"custom": customFunc,
-	})
+	// Testing field validation
+	data = test2{a: "a"}
+	valid, msg, err = ValidateFieldsWithYAML(data, "schema.yaml", schema,
+		map[string]func(reflect.Value, string) (bool, string, error){
+			"custom": customFunc,
+		})
 	assert.True(valid)
-	assert.Empty(validationData)
+	assert.Empty(msg)
 	assert.NoError(err)
-	assert.True(dataCame)
+
+	data = test2{a: "abcdf"}
+	valid, msg, err = ValidateFieldsWithYAML(data, "schema.yaml", schema)
+	assert.False(valid)
+	assert.NotEmpty(msg)
+	assert.NoError(err)
+
+	data = test2{a: "a"}
+	valid, msg, err = ValidateFieldsWithYAML(data, "schema3.yaml", schema)
+	assert.False(valid)
+	assert.Empty(msg)
+	assert.Error(err)
 }
 
 func TestPanicHandler(t *testing.T) {
